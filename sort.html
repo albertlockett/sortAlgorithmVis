@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <title>Sort Visualizations</title>
+
+    <script type="text/javascript" src="/jquery.js"></script>
+    <script type="text/javascript" src="/d3.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/sortVis.js"></script>
+
+
+
+
+    <style>
+      body {
+        font-family: Verdana, Helvetica, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>Sort Algorithm Visualizer</h1>
+
+    <svg></svg>
+
+
+    <script>
+      var myList = new List();
+      myList.printContents();
+      myList.add(5);
+      myList.add(4);
+      myList.add(100);
+      myList.add(11);
+      myList.add(99);
+      myList.add(3);
+
+      // insertion sort
+      var listSize = myList.size()
+      for(var i = 0; i < listSize; i++) {
+        var x = myList.get(i);
+        var j = i;
+        while(j > 0 && myList.get(j - 1) > x) {
+          myList.set(j, myList.get(j - 1));
+          j = j - 1;
+        }
+        myList.set(j, x);
+      }
+
+
+      // some variables
+      ch = 375; // chart height
+      cw = 700; // chart width
+      pl = 100; // position left
+      pt =  50; // position top
+
+      var svg = d3.select("svg")
+          .attr("height", 1000)
+          .attr("width", 1000);
+
+      var g = svg.append("g")
+          .attr("transform", "translate(" + [pl,pt] + ")");
+
+      // scale the rectangles within the chart
+      var xScale = d3.scale.linear()
+          .domain([0, 1])
+          .range([0, cw]);
+      var yScale = d3.scale.linear()
+          .domain([0, 1])
+          .range([0, ch]);
+
+      var rects = [
+        {w:0.1, h: 0.5}, {w:0.1, h:0.6}
+      ]
+
+      g.selectAll("rect")
+        .data(rects)
+        .enter()
+        .append("rect")
+        .attr({
+          x     : function(d, i) { return xScale(i); },
+          y     : function(d, i) { return ch - yScale(d.h) },
+          width : function(d, i) { return xScale(d.w); },
+          height: function(d, i) { return yScale(d.h); },
+          fill  : "#7777EE"
+        });
+    </script>
+  </body>
+</html>
