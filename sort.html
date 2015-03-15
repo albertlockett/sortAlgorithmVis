@@ -2,9 +2,9 @@
   <head>
     <title>Sort Visualizations</title>
 
-    <script type="text/javascript" src="/jquery.js"></script>
-    <script type="text/javascript" src="/d3.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/sortVis.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="d3.js" charset="utf-8"></script>
+    <script type="text/javascript" src="sortVis.js"></script>
 
 
 
@@ -49,18 +49,6 @@
           .domain([0, 1])
           .range([0, ch]);
 
-      // create new list:
-      var myList = new List();
-      myList.printContents();
-      myList.add(5);
-      myList.add(4);
-      myList.add(100);
-      myList.add(11);
-      myList.add(99);
-      myList.add(3);
-
-      myList.setAttributes({"g": g});
-
       function sleep(milliseconds) {
         var start = new Date().getTime();
         for (var i = 0; i < 1e7; i++) {
@@ -69,30 +57,43 @@
           }
         }
       }
+	
+	var myList = new List();
+      myList.printContents();
+      myList.add(5);
+      myList.add(100);
+      myList.add(11);
+      myList.add(99);
+      myList.add(3);
+      myList.setAttributes({"g": g, toc:0});
 
-      myList.modifiedCallback = function(attributes) {
-
+	  myList.modifiedCallback = function(attributes) {
         var max = this.max();
         var g = attributes["g"];
-
-        function update(rects) {
-          g.selectAll("rect").remove();
-
-          var bars = g.selectAll("rect").data(rects);
-          bars.enter().append("rect").attr({
-            x     : function(d, i) { return xScale(i/rects.length); },
-            y     : function(d, i) { return ch - yScale(d/max) },
-            width : function(d, i) { return xScale(0.8 / rects.length); },
-            height: function(d, i) { return yScale(d/max); },
-            fill  : "#7777EE",
-            class : "enter"
-          });
-        }
-
-        update(this.arr);
+		var toc = attributes.toc;
+		attributes.toc = toc + 1;
+		var len = this.arr.length
+		var data = this.arr;
+		(function(dat, l, m) {
+			var d2 = dat.slice(0);
+			var ln = l
+			var mx = m
+			setTimeout(function() {
+		       g.selectAll("rect").remove();
+		       var bars = g.selectAll("rect").data(d2);
+		       	bars.enter().append("rect").attr({
+	   	    	  x     : function(d, i) { return xScale(i/ln); },
+	   	    	  y     : function(d, i) { return ch - yScale(d/mx) },
+	   	    	  width : function(d, i) { return xScale(0.8 / ln); },
+	   	    	  height: function(d, i) { return yScale(d/mx); },
+	   		      fill  : "#7777EE",
+	   		      class : "enter"
+	   	   	 });
+			}, toc * 500);
+		})(data, len, max);
       }
-
-      // insertion sort
+	
+	  // insertion sort
       var listSize = myList.size()
       for(var i = 0; i < listSize; i++) {
         var x = myList.get(i);
@@ -102,9 +103,7 @@
           j = j - 1;
         }
         myList.set(j, x);
-        sleep(500);
       }
-
 
     </script>
   </body>
