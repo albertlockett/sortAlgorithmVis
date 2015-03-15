@@ -65,6 +65,9 @@
       myList.add(11);
       myList.add(99);
       myList.add(3);
+	for(var i = 0; i < 100; i ++) {
+		myList.add(Math.random() * 100);
+	}
       myList.setAttributes({"g": g, toc:0});
 
 	  myList.modifiedCallback = function(attributes) {
@@ -89,7 +92,7 @@
 	   		      fill  : "#7777EE",
 	   		      class : "enter"
 	   	   	 });
-			}, toc * 500);
+			}, toc * 50);
 		})(data, len, max);
       }
 	
