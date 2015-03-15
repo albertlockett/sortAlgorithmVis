@@ -17,7 +17,7 @@
   </head>
   <body>
 
-    <h1>Sort Algorithm Visualizer</h1>
+    <h1>Sort</h1>
 
     <svg></svg>
 
@@ -65,7 +65,8 @@
       myList.add(11);
       myList.add(99);
       myList.add(3);
-	for(var i = 0; i < 100; i ++) {
+	var listLen = 100;
+	for(var i = 0; i < listLen; i ++) {
 		myList.add(Math.random() * 100);
 	}
       myList.setAttributes({"g": g, toc:0});
@@ -92,7 +93,7 @@
 	   		      fill  : "#7777EE",
 	   		      class : "enter"
 	   	   	 });
-			}, toc * 50);
+			}, toc * 15);
 		})(data, len, max);
       }
 	
@@ -107,6 +108,25 @@
         }
         myList.set(j, x);
       }
+
+	for(var i =0; i < listLen; i ++) {
+		myList.set(i, Math.random() * 100)
+	}
+
+	// bubble sort
+	var swapped;
+	var listSize = myList.size();
+	do {
+		swapped = false;
+		for(var j =0; j < listSize; j++) {
+			if(myList.get(j) > myList.get(j + 1)) {
+				var temp = myList.get(j);
+				myList.set(j,myList.get(j + 1));
+				myList.set(j + 1, temp);
+				swapped = true;
+			}
+		}
+	} while(swapped);
 
     </script>
   </body>
